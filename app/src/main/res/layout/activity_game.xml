@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include
+        layout="@layout/first_game_field"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="62dp"
+        android:layout_gravity="center|top">
+
+        <ImageView
+            android:layout_width="340dp"
+            android:layout_height="100dp"
+            android:src="@drawable/time_bar"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time"
+            android:textColor="@color/colorWhite"
+            android:layout_gravity="right|center"
+            android:layout_marginRight="100dp"
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold"
+            android:textSize="40sp"/>
+
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/shadow"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/you_win"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:src="@drawable/you_win"
+        android:layout_gravity="center"
+        android:visibility="invisible"/>
+
+
+</FrameLayout>
