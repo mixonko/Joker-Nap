@@ -16,9 +16,35 @@ import java.lang.Exception
 
 
 class GameActivity : AppCompatActivity(), GameContract {
-    override fun Toast( ) {
-            Toast.makeText(this, "asdsadsad", Toast.LENGTH_SHORT).show()
+    override fun setText(text: String) {
+        time.setText(text)
+    }
 
+    override fun showYouLose() {
+        Toast.makeText(this, "lose", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun hideYouLose() {
+        Toast.makeText(this, "hide lose", Toast.LENGTH_SHORT).show()
+
+    }
+
+    override fun showWrongChoice(thrimble: ImageView) {
+        thrimble.animate()
+            .translationYBy(-200F)
+            .start()
+    }
+
+    override fun hideChoice(thrimbleRightChoice: ImageView) {
+        thrimbleRightChoice.animate()
+            .translationYBy(200F)
+            .start()
+    }
+
+    override fun showRightChoice(thrimble: ImageView) {
+        thrimble.animate()
+            .translationYBy(-200F)
+            .start()
     }
 
     private lateinit var jokerMiniImageView1: ImageView
@@ -32,6 +58,9 @@ class GameActivity : AppCompatActivity(), GameContract {
     private lateinit var imageView1: ImageView
     private lateinit var imageView2: ImageView
     private lateinit var imageView3: ImageView
+    private lateinit var thrimble1: ImageView
+    private lateinit var thrimble2: ImageView
+    private lateinit var thrimble3: ImageView
     private lateinit var youWin: ImageView
     private lateinit var shadow: ImageView
     private lateinit var time: TextView
@@ -47,19 +76,13 @@ class GameActivity : AppCompatActivity(), GameContract {
 
         presenter = GamePresenter(this)
 
-        init()
-
-        initImageView()
+        presenter.onCreate()
 
         setImageOnClickListener()
 
-        setTag()
-
-        presenter.onCreate()
-
     }
 
-    private fun init() {
+    override fun init() {
         jokerMiniImageView1 = findViewById(R.id.joker1)
         jokerMiniImageView2 = findViewById(R.id.joker2)
         jokerMiniImageView3 = findViewById(R.id.joker3)
@@ -70,49 +93,67 @@ class GameActivity : AppCompatActivity(), GameContract {
         youWin = findViewById(R.id.you_win)
         shadow = findViewById(R.id.shadow)
         frameLayout = findViewById(R.id.frame)
-        frameLayout.setOnClickListener{
-            presenter.onBackgroundClick()
-        }
+
         val layoutInflater: LayoutInflater = LayoutInflater.from(applicationContext)
         firstView = layoutInflater.inflate(R.layout.first_game_field, null)
-        frameLayout.addView(firstView)
+        frameLayout.setOnClickListener {
+            frameLayout.removeView(firstView)
+            frameLayout.addView(firstView)
+            presenter.onBackgroundClick()
 
+        }
+        frameLayout.addView(firstView)
     }
 
-    private fun initImageView() {
+    override fun initImageView() {
         imageView1 = findViewById(R.id.image_view_1)
         imageView2 = findViewById(R.id.image_view_2)
         imageView3 = findViewById(R.id.image_view_3)
+        thrimble1 = findViewById(R.id.thrimble1)
+        thrimble2 = findViewById(R.id.thrimble2)
+        thrimble3 = findViewById(R.id.thrimble3)
+        thrimble1.setTag(1)
+        thrimble2.setTag(2)
+        thrimble3.setTag(3)
     }
 
     private fun setImageOnClickListener() {
-        imageView1.setOnClickListener {
-            presenter.onImageClick()
+        thrimble1.setOnClickListener {
+            presenter.onImageClick(thrimble1.getTag() as Int, thrimble1)
+
         }
-        imageView2.setOnClickListener {
-            presenter.onImageClick()
+        thrimble2.setOnClickListener {
+            presenter.onImageClick(thrimble1.getTag() as Int, thrimble2)
+
+
         }
-        imageView3.setOnClickListener {
-            presenter.onImageClick()
+        thrimble3.setOnClickListener {
+            presenter.onImageClick(thrimble1.getTag() as Int, thrimble3)
+
         }
 
-    }
+        youWin.setOnClickListener {
+            presenter.onYouWinClick()
+          }
 
-    private fun setTag() {
-        imageView1.setTag(1)
-        imageView2.setTag(2)
-        imageView3.setTag(3)
     }
 
     override fun showYouWin() {
-        youWin.visibility = View.VISIBLE
-        shadow.visibility = View.VISIBLE
+        Handler().postDelayed({
+            youWin.visibility = View.VISIBLE
+            shadow.visibility = View.VISIBLE
+        }, 1000)
+    }
+
+    override fun hideYouWin() {
+        youWin.visibility = View.INVISIBLE
+        shadow.visibility = View.INVISIBLE
     }
 
     override fun setEnable() {
-            imageView1.isEnabled = true
-            imageView2.isEnabled = true
-            imageView3.isEnabled = true
+        imageView1.isEnabled = true
+        imageView2.isEnabled = true
+        imageView3.isEnabled = true
 
     }
 
@@ -127,14 +168,14 @@ class GameActivity : AppCompatActivity(), GameContract {
         try {
             frameLayout.removeView(firstView)
             frameLayout.removeView(secondView)
-        } catch (e: Exception) { }
+        } catch (e: Exception) {
+        }
 
         firstView = layoutInflater.inflate(R.layout.first_game_field, null)
 
         frameLayout.addView(firstView)
 
         initImageView()
-        setImageOnClickListener()
 
     }
 
@@ -142,18 +183,18 @@ class GameActivity : AppCompatActivity(), GameContract {
         try {
             frameLayout.removeView(firstView)
             frameLayout.removeView(secondView)
-        } catch (e: Exception) {  }
+        } catch (e: Exception) {
+        }
 
         secondView = layoutInflater.inflate(R.layout.second_game_field, null)
 
         frameLayout.addView(secondView)
 
         initImageView()
-        setImageOnClickListener()
 
     }
 
-    override fun animate12(timeInMillis: Long, postDelayedMultiply : Int) {
+    override fun animate12(timeInMillis: Long, postDelayedMultiply: Int) {
         Handler().postDelayed({
             setFirstGameField()
             imageView1.animate()
@@ -190,7 +231,7 @@ class GameActivity : AppCompatActivity(), GameContract {
         }, timeInMillis * postDelayedMultiply)
     }
 
-    override fun animate13(timeInMillis: Long, postDelayedMultiply : Int) {
+    override fun animate13(timeInMillis: Long, postDelayedMultiply: Int) {
         Handler().postDelayed({
             setFirstGameField()
 
@@ -229,7 +270,7 @@ class GameActivity : AppCompatActivity(), GameContract {
 
     }
 
-    override fun animate23(timeInMillis: Long, postDelayedMultiply : Int) {
+    override fun animate23(timeInMillis: Long, postDelayedMultiply: Int) {
         Handler().postDelayed({
             setFirstGameField()
 
@@ -270,7 +311,7 @@ class GameActivity : AppCompatActivity(), GameContract {
 
     ///////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun animate21(timeInMillis: Long, postDelayedMultiply : Int) {
+    override fun animate21(timeInMillis: Long, postDelayedMultiply: Int) {
         Handler().postDelayed({
             setSecondGameField()
 
@@ -309,7 +350,7 @@ class GameActivity : AppCompatActivity(), GameContract {
 
     }
 
-    override fun animate31(timeInMillis: Long, postDelayedMultiply : Int) {
+    override fun animate31(timeInMillis: Long, postDelayedMultiply: Int) {
         Handler().postDelayed({
             setSecondGameField()
 
@@ -348,7 +389,7 @@ class GameActivity : AppCompatActivity(), GameContract {
 
     }
 
-    override fun animate32(timeInMillis: Long, postDelayedMultiply : Int) {
+    override fun animate32(timeInMillis: Long, postDelayedMultiply: Int) {
         Handler().postDelayed({
             setSecondGameField()
 
@@ -387,7 +428,7 @@ class GameActivity : AppCompatActivity(), GameContract {
 
     }
 
-    override fun hideJokerAndShadow(timeInMillis: Long){
+    override fun hideJokerAndShadow(timeInMillis: Long) {
         Handler().postDelayed({
             jokerMiniImageView1.visibility = View.INVISIBLE
             jokerMiniImageView2.visibility = View.INVISIBLE
@@ -398,7 +439,7 @@ class GameActivity : AppCompatActivity(), GameContract {
         }, timeInMillis)
     }
 
-    override fun showJokerAndShadow(){
+    override fun showJokerAndShadow() {
         jokerMiniImageView1.visibility = View.VISIBLE
         jokerMiniImageView2.visibility = View.VISIBLE
         jokerMiniImageView3.visibility = View.VISIBLE
@@ -442,5 +483,37 @@ class GameActivity : AppCompatActivity(), GameContract {
                     .setDuration(timeInMillis / 2)
                     .start()
             }.start()
+    }
+
+    override fun removeViewThrimble(timeInMillis: Long) {
+
+        Handler().postDelayed({
+            try {
+                frameLayout.removeView(firstView)
+                frameLayout.removeView(secondView)
+
+            } catch (e: Exception) {
+            }
+        }, timeInMillis)
+
+    }
+
+    override fun showMainThrimble(timeInMillis: Long) {
+        Handler().postDelayed({
+            thrimble1.visibility = View.VISIBLE
+            thrimble2.visibility = View.VISIBLE
+            thrimble3.visibility = View.VISIBLE
+        }, timeInMillis)
+    }
+
+    override fun hideMainThrimble() {
+        thrimble1.visibility = View.INVISIBLE
+        thrimble2.visibility = View.INVISIBLE
+        thrimble3.visibility = View.INVISIBLE
+    }
+
+    override fun Toast() {
+        Toast.makeText(this, "asdsadsad", Toast.LENGTH_SHORT).show()
+
     }
 }
