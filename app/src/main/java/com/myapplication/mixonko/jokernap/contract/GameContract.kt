@@ -10,8 +10,10 @@ interface GameContract {
     fun hideYouWin()
     fun showYouLose()
     fun hideYouLose()
-    fun setEnable()
-    fun setDisable()
+    fun setThrimbleEnable()
+    fun setThrimbleDisable()
+    fun setBackgroundDisable()
+    fun setBackgroundEnable()
     fun animate12(timeInMillis: Long, postDelayedMultiply : Int)
     fun animate13(timeInMillis: Long, postDelayedMultiply : Int)
     fun animate21(timeInMillis: Long, postDelayedMultiply : Int)
@@ -30,5 +32,6 @@ interface GameContract {
     fun showWrongChoice(thrimble: ImageView)
     fun hideChoice(thrimbleRightChoice: ImageView)
     fun setText(text: String)
+    fun addView()
 
 }
