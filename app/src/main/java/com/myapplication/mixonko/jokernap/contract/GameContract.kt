@@ -33,5 +33,7 @@ interface GameContract {
     fun hideChoice(thrimbleRightChoice: ImageView)
     fun setText(text: String)
     fun addView()
+    fun stopCountDownTimer()
+    fun startCountDownTimer(delayTime: Long)
 
 }

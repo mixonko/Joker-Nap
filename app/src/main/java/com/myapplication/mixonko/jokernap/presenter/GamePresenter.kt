@@ -5,10 +5,10 @@ import com.myapplication.mixonko.jokernap.contract.GameContract
 import com.myapplication.mixonko.jokernap.model.MixGlasses
 
 class GamePresenter(val view: GameContract, val mix: MixGlasses = MixGlasses()) {
-    private var lvl = 15
+    private var lvl = 5
     private var choice = 1
     private var timeInMillis = 1000L
-    private lateinit var thrimbleRightChoice: ImageView
+    private var thrimbleRightChoice: ImageView? = null
 
     fun onImageClick(thrimble: ImageView) {
         if (thrimble.getTag() == choice) {
@@ -17,14 +17,20 @@ class GamePresenter(val view: GameContract, val mix: MixGlasses = MixGlasses()) 
             view.showRightChoice(thrimble)
             view.showYouWin()
             view.setThrimbleDisable()
+            view.stopCountDownTimer()
         } else {
-            view.setThrimbleDisable()
             thrimbleRightChoice = thrimble
             view.showWrongChoice(thrimble)
-            view.showYouLose()
-            lvl = 1
+            gameOver()
         }
 
+    }
+
+    private fun gameOver(){
+        view.setThrimbleDisable()
+        view.showYouLose()
+        view.stopCountDownTimer()
+        lvl = 1
     }
 
     fun onBackgroundClick() {
@@ -51,8 +57,7 @@ class GamePresenter(val view: GameContract, val mix: MixGlasses = MixGlasses()) 
             choiceAnim(mix.randomAnim(), postDelayedMultiply)
 
         }
-        view.setText("$timeInMillis")
-
+        view.startCountDownTimer(timeInMillis * lvl + timeInMillis)
         view.removeViewThrimble(timeInMillis * lvl + timeInMillis)
         view.showMainThrimble(timeInMillis * lvl + timeInMillis)
 
@@ -151,7 +156,6 @@ class GamePresenter(val view: GameContract, val mix: MixGlasses = MixGlasses()) 
     fun onYouWinClick() {
         view.hideYouWin()
         lvl++
-        view.setText("$lvl")
         update()
 
     }
@@ -159,19 +163,24 @@ class GamePresenter(val view: GameContract, val mix: MixGlasses = MixGlasses()) 
     fun onYouLoseClick() {
         view.hideYouLose()
         lvl = 1
-        view.setText("$lvl")
+        view.setText("10:00")
         update()
 
     }
 
     private fun update(){
         view.hideMainThrimble()
-        view.hideChoice(thrimbleRightChoice)
+        thrimbleRightChoice?.let { view.hideChoice(it) }
+        thrimbleRightChoice = null
         view.setThrimbleEnable()
         view.init()
         view.addView()
         view.initImageView()
         view.setBackgroundEnable()
+    }
+
+    fun timeIsOver() {
+        gameOver()
     }
 
 }

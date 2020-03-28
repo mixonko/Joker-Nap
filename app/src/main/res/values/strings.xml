@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Joker Nap</string>
+    <string name="time_is_over">Time is over!</string>
+    <string name="game_over">Game Over</string>
 </resources>

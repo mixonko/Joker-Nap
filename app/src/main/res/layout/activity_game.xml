@@ -27,13 +27,13 @@
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="10:00"
             android:textColor="@color/colorWhite"
-            android:layout_gravity="right|center"
-            android:layout_marginRight="100dp"
+            android:layout_gravity="left|center"
+            android:layout_marginLeft="150dp"
             android:layout_marginBottom="10dp"
             android:textStyle="bold"
-            android:textSize="40sp"/>
+            android:textSize="30dp"/>
 
 
     </FrameLayout>
@@ -63,7 +63,7 @@
     <ImageView
         android:id="@+id/you_lose"
         android:layout_width="350dp"
-        android:layout_height="400dp"
+        android:layout_height="170dp"
         android:src="@drawable/try_again"
         android:layout_gravity="center"
         android:visibility="invisible"/>

@@ -1,6 +1,7 @@
 package com.myapplication.mixonko.jokernap.view
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +14,15 @@ import com.myapplication.mixonko.jokernap.R
 import com.myapplication.mixonko.jokernap.contract.GameContract
 import com.myapplication.mixonko.jokernap.presenter.GamePresenter
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 class GameActivity : AppCompatActivity(), GameContract {
+    override fun setText(text: String) {
+        time.setText(text)
+    }
 
+    private lateinit var countDownTimer: CountDownTimer
 
     private lateinit var jokerMiniImageView1: ImageView
     private lateinit var jokerMiniImageView2: ImageView
@@ -41,6 +48,27 @@ class GameActivity : AppCompatActivity(), GameContract {
     private lateinit var secondView: View
 
     private lateinit var presenter: GamePresenter
+
+    override fun startCountDownTimer(delayTime: Long) {
+        Handler().postDelayed({
+            countDownTimer = object : CountDownTimer(10000, 10) {
+
+                override fun onTick(millisUntilFinished: Long) {
+                    val mTimeFormat = SimpleDateFormat("ss:SS")
+                    time.setText(mTimeFormat.format(Date(millisUntilFinished)))
+                }
+
+                override fun onFinish() {
+                    time.setText(R.string.game_over)
+                    presenter.timeIsOver()
+                }
+            }.start()
+        }, delayTime)
+    }
+
+    override fun stopCountDownTimer() {
+        countDownTimer.cancel()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -179,14 +207,14 @@ class GameActivity : AppCompatActivity(), GameContract {
             setFirstGameField()
             imageView1.animate()
                 .translationXBy(180F)
-                .translationYBy(-110F)
+                .translationYBy(-100F)
                 .scaleYBy(-0.4F)
                 .scaleXBy(-0.4F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView1.animate()
                         .translationXBy(180F)
-                        .translationYBy(110F)
+                        .translationYBy(100F)
                         .scaleYBy(0.4F)
                         .scaleXBy(0.4F)
                         .setDuration(timeInMillis / 2)
@@ -196,15 +224,15 @@ class GameActivity : AppCompatActivity(), GameContract {
             imageView2.animate()
                 .translationXBy(-180F)
                 .translationYBy(100F)
-                .scaleYBy(0.4F)
-                .scaleXBy(0.4F)
+                .scaleYBy(0.3F)
+                .scaleXBy(0.3F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView2.animate()
                         .translationXBy(-180F)
                         .translationYBy(-100F)
-                        .scaleYBy(-0.4F)
-                        .scaleXBy(-0.4F)
+                        .scaleYBy(-0.3F)
+                        .scaleXBy(-0.3F)
                         .setDuration(timeInMillis / 2)
                         .start()
                 }.start()
@@ -217,14 +245,14 @@ class GameActivity : AppCompatActivity(), GameContract {
 
             imageView1.animate()
                 .translationXBy(360F)
-                .translationYBy(-110F)
+                .translationYBy(-120F)
                 .scaleYBy(-0.4F)
                 .scaleXBy(-0.4F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView1.animate()
                         .translationXBy(360F)
-                        .translationYBy(110F)
+                        .translationYBy(120F)
                         .scaleYBy(0.4F)
                         .scaleXBy(0.4F)
                         .setDuration(timeInMillis / 2)
@@ -233,16 +261,16 @@ class GameActivity : AppCompatActivity(), GameContract {
 
             imageView3.animate()
                 .translationXBy(-360F)
-                .translationYBy(100F)
-                .scaleYBy(0.4F)
-                .scaleXBy(0.4F)
+                .translationYBy(130F)
+                .scaleYBy(0.3F)
+                .scaleXBy(0.3F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView3.animate()
                         .translationXBy(-360F)
-                        .translationYBy(-100F)
-                        .scaleYBy(-0.4F)
-                        .scaleXBy(-0.4F)
+                        .translationYBy(-130F)
+                        .scaleYBy(-0.3F)
+                        .scaleXBy(-0.3F)
                         .setDuration(timeInMillis / 2)
                         .start()
                 }.start()
@@ -256,14 +284,14 @@ class GameActivity : AppCompatActivity(), GameContract {
 
             imageView2.animate()
                 .translationXBy(180F)
-                .translationYBy(-110F)
+                .translationYBy(-100F)
                 .scaleYBy(-0.4F)
                 .scaleXBy(-0.4F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView2.animate()
                         .translationXBy(180F)
-                        .translationYBy(110F)
+                        .translationYBy(100F)
                         .scaleYBy(0.4F)
                         .scaleXBy(0.4F)
                         .setDuration(timeInMillis / 2)
@@ -273,15 +301,15 @@ class GameActivity : AppCompatActivity(), GameContract {
             imageView3.animate()
                 .translationXBy(-180F)
                 .translationYBy(100F)
-                .scaleYBy(0.4F)
-                .scaleXBy(0.4F)
+                .scaleYBy(0.3F)
+                .scaleXBy(0.3F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView3.animate()
                         .translationXBy(-180F)
                         .translationYBy(-100F)
-                        .scaleYBy(-0.4F)
-                        .scaleXBy(-0.4F)
+                        .scaleYBy(-0.3F)
+                        .scaleXBy(-0.3F)
                         .setDuration(timeInMillis / 2)
                         .start()
                 }.start()
@@ -297,14 +325,14 @@ class GameActivity : AppCompatActivity(), GameContract {
 
             imageView2.animate()
                 .translationXBy(-180F)
-                .translationYBy(-110F)
+                .translationYBy(-100F)
                 .scaleYBy(-0.4F)
                 .scaleXBy(-0.4F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView2.animate()
                         .translationXBy(-180F)
-                        .translationYBy(110F)
+                        .translationYBy(100F)
                         .scaleYBy(0.4F)
                         .scaleXBy(0.4F)
                         .setDuration(timeInMillis / 2)
@@ -314,15 +342,15 @@ class GameActivity : AppCompatActivity(), GameContract {
             imageView1.animate()
                 .translationXBy(180F)
                 .translationYBy(100F)
-                .scaleYBy(0.4F)
-                .scaleXBy(0.4F)
+                .scaleYBy(0.3F)
+                .scaleXBy(0.3F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView1.animate()
                         .translationXBy(180F)
                         .translationYBy(-100F)
-                        .scaleYBy(-0.4F)
-                        .scaleXBy(-0.4F)
+                        .scaleYBy(-0.3F)
+                        .scaleXBy(-0.3F)
                         .setDuration(timeInMillis / 2)
                         .start()
                 }.start()
@@ -336,14 +364,14 @@ class GameActivity : AppCompatActivity(), GameContract {
 
             imageView3.animate()
                 .translationXBy(-360F)
-                .translationYBy(-110F)
+                .translationYBy(-120F)
                 .scaleYBy(-0.4F)
                 .scaleXBy(-0.4F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView3.animate()
                         .translationXBy(-360F)
-                        .translationYBy(110F)
+                        .translationYBy(120F)
                         .scaleYBy(0.4F)
                         .scaleXBy(0.4F)
                         .setDuration(timeInMillis / 2)
@@ -352,16 +380,16 @@ class GameActivity : AppCompatActivity(), GameContract {
 
             imageView1.animate()
                 .translationXBy(360F)
-                .translationYBy(100F)
-                .scaleYBy(0.4F)
-                .scaleXBy(0.4F)
+                .translationYBy(130F)
+                .scaleYBy(0.3F)
+                .scaleXBy(0.3F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView1.animate()
                         .translationXBy(360F)
-                        .translationYBy(-100F)
-                        .scaleYBy(-0.4F)
-                        .scaleXBy(-0.4F)
+                        .translationYBy(-130F)
+                        .scaleYBy(-0.3F)
+                        .scaleXBy(-0.3F)
                         .setDuration(timeInMillis / 2)
                         .start()
                 }.start()
@@ -375,14 +403,14 @@ class GameActivity : AppCompatActivity(), GameContract {
 
             imageView3.animate()
                 .translationXBy(-180F)
-                .translationYBy(-110F)
+                .translationYBy(-100F)
                 .scaleYBy(-0.4F)
                 .scaleXBy(-0.4F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView3.animate()
                         .translationXBy(-180F)
-                        .translationYBy(110F)
+                        .translationYBy(100F)
                         .scaleYBy(0.4F)
                         .scaleXBy(0.4F)
                         .setDuration(timeInMillis / 2)
@@ -392,15 +420,15 @@ class GameActivity : AppCompatActivity(), GameContract {
             imageView2.animate()
                 .translationXBy(180F)
                 .translationYBy(100F)
-                .scaleYBy(0.4F)
-                .scaleXBy(0.4F)
+                .scaleYBy(0.3F)
+                .scaleXBy(0.3F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView2.animate()
                         .translationXBy(180F)
                         .translationYBy(-100F)
-                        .scaleYBy(-0.4F)
-                        .scaleXBy(-0.4F)
+                        .scaleYBy(-0.3F)
+                        .scaleXBy(-0.3F)
                         .setDuration(timeInMillis / 2)
                         .start()
                 }.start()
@@ -503,10 +531,6 @@ class GameActivity : AppCompatActivity(), GameContract {
 
     override fun setBackgroundDisable() {
         background.isEnabled = false
-    }
-
-    override fun setText(text: String) {
-        time.setText(text)
     }
 
     override fun showYouLose() {
