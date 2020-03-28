@@ -7,13 +7,14 @@ import com.myapplication.mixonko.jokernap.model.MixGlasses
 import com.myapplication.mixonko.jokernap.util.MyAppContext
 
 class GamePresenter(val view: GameContract, val mix: MixGlasses = MixGlasses()) {
-    private var lvl = 5
-    private var rightChoice = 0
-    private var timeInMillis = 1000L
+    private var lvl = 10
+    private var rightChoice = 1
+    private var choice = 1
+    private var timeInMillis = 500L
     private lateinit var thrimbleRightChoice: ImageView
 
-    fun onImageClick(number: Int, thrimble: ImageView) {
-        if(number == rightChoice){
+    fun onImageClick(thrimble: ImageView) {
+        if(thrimble.getTag() == choice){
             view.showJokerAndShadow()
             thrimbleRightChoice = thrimble
             view.showRightChoice(thrimble)
@@ -37,66 +38,108 @@ class GamePresenter(val view: GameContract, val mix: MixGlasses = MixGlasses()) 
 
     private fun startGame() {
         rightChoice = mix.randomJokerInThimble()
-        Toast.makeText(MyAppContext.getAppContext(), "$rightChoice", Toast.LENGTH_SHORT).show()
-
-        animateTrimble(rightChoice)
+        choice = rightChoice
         view.hideJokerAndShadow(timeInMillis)
 
-        for (postDelayedMultiply in 1..lvl) {
+        for (postDelayedMultiply in 1..lvl ) {
             choiceAnim(mix.randomAnim(), postDelayedMultiply)
-        }
 
-        view.removeViewThrimble(timeInMillis * lvl)
-        view.showMainThrimble(timeInMillis * lvl)
+        }
+        animateTrimble(choice)
+        view.setText("$choice")
+        choice = rightChoice
+
+        Toast.makeText(MyAppContext.getAppContext(), "$rightChoice + $choice ", Toast.LENGTH_SHORT).show()
+
+        view.removeViewThrimble(timeInMillis * lvl + timeInMillis)
+        view.showMainThrimble(timeInMillis * lvl + timeInMillis)
 
 
 
     }
 
-    private fun animateTrimble(rightChoice: Int) {
-        when (rightChoice) {
-            1 -> view.animateThimble1(timeInMillis)
-            2 -> view.animateThimble2(timeInMillis)
-            3 -> view.animateThimble3(timeInMillis)
-        }
+    private fun animateTrimble(number: Int) {
+//        when (number) {
+//            1 -> view.animateThimble1(timeInMillis)
+//            2 -> view.animateThimble2(timeInMillis)
+//            3 -> view.animateThimble3(timeInMillis)
+//        }
+        if (number == 1)view.animateThimble1(timeInMillis)
+        if (number == 2)view.animateThimble2(timeInMillis)
+        if (number == 3)view.animateThimble3(timeInMillis)
     }
 
     private fun choiceAnim(choiceAnim: Int, postDelayedMultiply: Int) {
         when (choiceAnim) {
             1 -> {
-                if (rightChoice == 1){rightChoice = 2}
-                else if (rightChoice == 2){rightChoice = 1}
                 view.animate12(timeInMillis, postDelayedMultiply)
+                if (rightChoice == 1){
+                    rightChoice = 2
+                    return
+                }
+                if (rightChoice == 2) {
+                    rightChoice = 1
+                    return
+                }
             }
             2 -> {
-                if (rightChoice == 1){rightChoice = 3}
-                else if (rightChoice == 3) {rightChoice = 1}
-
                 view.animate13(timeInMillis, postDelayedMultiply)
+                if (rightChoice == 1){
+                    rightChoice = 3
+                    return
+                }
+                if (rightChoice == 3) {
+                    rightChoice = 1
+                    return
+                }
             }
             3 -> {
-                if (rightChoice == 2) {rightChoice = 1}
-                else if (rightChoice == 1){rightChoice = 2}
-
                 view.animate21(timeInMillis, postDelayedMultiply)
+                if (rightChoice == 2) {
+                    rightChoice = 1
+                    return
+                }
+                if (rightChoice == 1){
+                    rightChoice = 2
+                    return
+                }
+
             }
             4 -> {
-                if (rightChoice == 2){rightChoice = 3}
-                else if (rightChoice == 3){rightChoice = 2}
-
                 view.animate23(timeInMillis, postDelayedMultiply)
+                if (rightChoice == 2){
+                    rightChoice = 3
+                    return
+                }
+                if (rightChoice == 3){
+                    rightChoice = 2
+                    return
+                }
+
             }
             5 -> {
-                if (rightChoice == 3) {rightChoice = 1}
-                else if (rightChoice == 1) {rightChoice = 3}
-
                 view.animate31(timeInMillis, postDelayedMultiply)
+                if (rightChoice == 3) {
+                    rightChoice = 1
+                    return
+                }
+                if (rightChoice == 1) {
+                    rightChoice = 3
+                    return
+                }
+
             }
             6 -> {
-                if (rightChoice == 3) {rightChoice = 2}
-                else if (rightChoice == 2) {rightChoice = 3}
-
                 view.animate32(timeInMillis, postDelayedMultiply)
+                if (rightChoice == 3) {
+                    rightChoice = 2
+                    return
+                }
+                if (rightChoice == 2) {
+                    rightChoice = 3
+                    return
+                }
+
             }
 
         }

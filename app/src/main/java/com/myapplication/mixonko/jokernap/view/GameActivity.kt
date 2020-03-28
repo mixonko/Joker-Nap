@@ -118,17 +118,17 @@ class GameActivity : AppCompatActivity(), GameContract {
     }
 
     private fun setImageOnClickListener() {
-        thrimble1.setOnClickListener {
-            presenter.onImageClick(thrimble1.getTag() as Int, thrimble1)
+            thrimble1.setOnClickListener {
+            presenter.onImageClick(thrimble1)
 
         }
         thrimble2.setOnClickListener {
-            presenter.onImageClick(thrimble1.getTag() as Int, thrimble2)
+            presenter.onImageClick(thrimble2)
 
 
         }
         thrimble3.setOnClickListener {
-            presenter.onImageClick(thrimble1.getTag() as Int, thrimble3)
+            presenter.onImageClick(thrimble3)
 
         }
 
