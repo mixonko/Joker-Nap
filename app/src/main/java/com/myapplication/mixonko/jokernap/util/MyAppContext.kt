@@ -13,6 +13,6 @@ class MyAppContext: Application() {
 
         private var context: Context? = null
 
-        fun gatAppContext() = context
+        fun getAppContext() = context
     }
 }
