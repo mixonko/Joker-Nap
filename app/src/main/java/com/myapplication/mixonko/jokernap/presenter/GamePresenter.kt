@@ -5,7 +5,7 @@ import com.myapplication.mixonko.jokernap.contract.GameContract
 import com.myapplication.mixonko.jokernap.model.MixGlasses
 
 class GamePresenter(val view: GameContract, val mix: MixGlasses = MixGlasses()) {
-    private var lvl = 5
+    private var lvl = 3
     private var choice = 1
     private var timeInMillis = 1000L
     private var thrimbleRightChoice: ImageView? = null
@@ -30,11 +30,14 @@ class GamePresenter(val view: GameContract, val mix: MixGlasses = MixGlasses()) 
         view.setThrimbleDisable()
         view.showYouLose()
         view.stopCountDownTimer()
-        lvl = 1
+        lvl = 3
     }
 
     fun onBackgroundClick() {
         timeInMillis = (1000 - (30*lvl)).toLong()
+        if (timeInMillis < 0){
+            timeInMillis = 10
+        }
         view.initImageView()
         view.hideMainThrimble()
         view.showJokerAndShadow()
@@ -156,13 +159,16 @@ class GamePresenter(val view: GameContract, val mix: MixGlasses = MixGlasses()) 
     fun onYouWinClick() {
         view.hideYouWin()
         lvl++
+        if (lvl > 30){
+            lvl = 30
+        }
         update()
 
     }
 
     fun onYouLoseClick() {
         view.hideYouLose()
-        lvl = 1
+        lvl = 3
         view.setText("10:00")
         update()
 

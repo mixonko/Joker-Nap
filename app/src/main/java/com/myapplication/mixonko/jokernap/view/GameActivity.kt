@@ -16,11 +16,24 @@ import com.myapplication.mixonko.jokernap.presenter.GamePresenter
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
+import android.util.DisplayMetrics
+import android.view.Display
+import androidx.core.app.ComponentActivity
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 class GameActivity : AppCompatActivity(), GameContract {
-    override fun setText(text: String) {
-        time.setText(text)
-    }
+
+//    private fun dp(){
+//        display  = windowManager.defaultDisplay
+//        outMetrics: DisplayMetrics = DisplayMetrics()
+//        display.getMetrics(outMetrics)
+//        time.setText("${outMetrics.widthPixels/6}")
+//        time.setText("${outMetrics.heightPixels}")
+//    }
 
     private lateinit var countDownTimer: CountDownTimer
 
@@ -49,6 +62,29 @@ class GameActivity : AppCompatActivity(), GameContract {
 
     private lateinit var presenter: GamePresenter
 
+
+    private lateinit var display: Display
+    private lateinit var outMetrics: DisplayMetrics
+    private var widthAnim: Float = 0F
+    private var heightAnim: Float = 0F
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_game)
+
+        presenter = GamePresenter(this)
+
+        presenter.onCreate()
+
+        setImageOnClickListener()
+
+        display  = windowManager.defaultDisplay
+        outMetrics = DisplayMetrics()
+        display.getMetrics(outMetrics)
+        widthAnim = (outMetrics.widthPixels/6).toFloat()
+        heightAnim = (outMetrics.heightPixels/15).toFloat()
+    }
+
     override fun startCountDownTimer(delayTime: Long) {
         Handler().postDelayed({
             countDownTimer = object : CountDownTimer(10000, 10) {
@@ -68,18 +104,6 @@ class GameActivity : AppCompatActivity(), GameContract {
 
     override fun stopCountDownTimer() {
         countDownTimer.cancel()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_game)
-
-        presenter = GamePresenter(this)
-
-        presenter.onCreate()
-
-        setImageOnClickListener()
-
     }
 
     override fun init() {
@@ -141,7 +165,6 @@ class GameActivity : AppCompatActivity(), GameContract {
             frameLayout.removeView(firstView)
             frameLayout.addView(firstView)
             presenter.onBackgroundClick()
-
         }
 
     }
@@ -206,15 +229,15 @@ class GameActivity : AppCompatActivity(), GameContract {
         Handler().postDelayed({
             setFirstGameField()
             imageView1.animate()
-                .translationXBy(180F)
-                .translationYBy(-100F)
+                .translationXBy(widthAnim)
+                .translationYBy(-heightAnim)
                 .scaleYBy(-0.4F)
                 .scaleXBy(-0.4F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView1.animate()
-                        .translationXBy(180F)
-                        .translationYBy(100F)
+                        .translationXBy(widthAnim)
+                        .translationYBy(heightAnim)
                         .scaleYBy(0.4F)
                         .scaleXBy(0.4F)
                         .setDuration(timeInMillis / 2)
@@ -222,15 +245,15 @@ class GameActivity : AppCompatActivity(), GameContract {
                 }.start()
 
             imageView2.animate()
-                .translationXBy(-180F)
-                .translationYBy(100F)
+                .translationXBy(-widthAnim)
+                .translationYBy(heightAnim)
                 .scaleYBy(0.3F)
                 .scaleXBy(0.3F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView2.animate()
-                        .translationXBy(-180F)
-                        .translationYBy(-100F)
+                        .translationXBy(-widthAnim)
+                        .translationYBy(-heightAnim)
                         .scaleYBy(-0.3F)
                         .scaleXBy(-0.3F)
                         .setDuration(timeInMillis / 2)
@@ -244,15 +267,15 @@ class GameActivity : AppCompatActivity(), GameContract {
             setFirstGameField()
 
             imageView1.animate()
-                .translationXBy(360F)
-                .translationYBy(-120F)
+                .translationXBy(widthAnim*2)
+                .translationYBy(-heightAnim )
                 .scaleYBy(-0.4F)
                 .scaleXBy(-0.4F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView1.animate()
-                        .translationXBy(360F)
-                        .translationYBy(120F)
+                        .translationXBy(widthAnim*2)
+                        .translationYBy(heightAnim )
                         .scaleYBy(0.4F)
                         .scaleXBy(0.4F)
                         .setDuration(timeInMillis / 2)
@@ -260,15 +283,15 @@ class GameActivity : AppCompatActivity(), GameContract {
                 }.start()
 
             imageView3.animate()
-                .translationXBy(-360F)
-                .translationYBy(130F)
+                .translationXBy(-widthAnim*2)
+                .translationYBy(heightAnim + 20)
                 .scaleYBy(0.3F)
                 .scaleXBy(0.3F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView3.animate()
-                        .translationXBy(-360F)
-                        .translationYBy(-130F)
+                        .translationXBy(-widthAnim*2)
+                        .translationYBy(-heightAnim - 20)
                         .scaleYBy(-0.3F)
                         .scaleXBy(-0.3F)
                         .setDuration(timeInMillis / 2)
@@ -283,15 +306,15 @@ class GameActivity : AppCompatActivity(), GameContract {
             setFirstGameField()
 
             imageView2.animate()
-                .translationXBy(180F)
-                .translationYBy(-100F)
+                .translationXBy(widthAnim)
+                .translationYBy(-heightAnim)
                 .scaleYBy(-0.4F)
                 .scaleXBy(-0.4F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView2.animate()
-                        .translationXBy(180F)
-                        .translationYBy(100F)
+                        .translationXBy(widthAnim)
+                        .translationYBy(heightAnim)
                         .scaleYBy(0.4F)
                         .scaleXBy(0.4F)
                         .setDuration(timeInMillis / 2)
@@ -299,15 +322,15 @@ class GameActivity : AppCompatActivity(), GameContract {
                 }.start()
 
             imageView3.animate()
-                .translationXBy(-180F)
-                .translationYBy(100F)
+                .translationXBy(-widthAnim)
+                .translationYBy(heightAnim)
                 .scaleYBy(0.3F)
                 .scaleXBy(0.3F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView3.animate()
-                        .translationXBy(-180F)
-                        .translationYBy(-100F)
+                        .translationXBy(-widthAnim)
+                        .translationYBy(-heightAnim)
                         .scaleYBy(-0.3F)
                         .scaleXBy(-0.3F)
                         .setDuration(timeInMillis / 2)
@@ -324,15 +347,15 @@ class GameActivity : AppCompatActivity(), GameContract {
             setSecondGameField()
 
             imageView2.animate()
-                .translationXBy(-180F)
-                .translationYBy(-100F)
+                .translationXBy(-widthAnim)
+                .translationYBy(-heightAnim)
                 .scaleYBy(-0.4F)
                 .scaleXBy(-0.4F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView2.animate()
-                        .translationXBy(-180F)
-                        .translationYBy(100F)
+                        .translationXBy(-widthAnim)
+                        .translationYBy(heightAnim)
                         .scaleYBy(0.4F)
                         .scaleXBy(0.4F)
                         .setDuration(timeInMillis / 2)
@@ -340,15 +363,15 @@ class GameActivity : AppCompatActivity(), GameContract {
                 }.start()
 
             imageView1.animate()
-                .translationXBy(180F)
-                .translationYBy(100F)
+                .translationXBy(widthAnim)
+                .translationYBy(heightAnim)
                 .scaleYBy(0.3F)
                 .scaleXBy(0.3F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView1.animate()
-                        .translationXBy(180F)
-                        .translationYBy(-100F)
+                        .translationXBy(widthAnim)
+                        .translationYBy(-heightAnim)
                         .scaleYBy(-0.3F)
                         .scaleXBy(-0.3F)
                         .setDuration(timeInMillis / 2)
@@ -363,15 +386,15 @@ class GameActivity : AppCompatActivity(), GameContract {
             setSecondGameField()
 
             imageView3.animate()
-                .translationXBy(-360F)
-                .translationYBy(-120F)
+                .translationXBy(-widthAnim*2)
+                .translationYBy(-heightAnim)
                 .scaleYBy(-0.4F)
                 .scaleXBy(-0.4F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView3.animate()
-                        .translationXBy(-360F)
-                        .translationYBy(120F)
+                        .translationXBy(-widthAnim*2)
+                        .translationYBy(heightAnim)
                         .scaleYBy(0.4F)
                         .scaleXBy(0.4F)
                         .setDuration(timeInMillis / 2)
@@ -379,15 +402,15 @@ class GameActivity : AppCompatActivity(), GameContract {
                 }.start()
 
             imageView1.animate()
-                .translationXBy(360F)
-                .translationYBy(130F)
+                .translationXBy(widthAnim*2)
+                .translationYBy(heightAnim + 20)
                 .scaleYBy(0.3F)
                 .scaleXBy(0.3F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView1.animate()
-                        .translationXBy(360F)
-                        .translationYBy(-130F)
+                        .translationXBy(widthAnim*2)
+                        .translationYBy(-heightAnim - 20)
                         .scaleYBy(-0.3F)
                         .scaleXBy(-0.3F)
                         .setDuration(timeInMillis / 2)
@@ -402,15 +425,15 @@ class GameActivity : AppCompatActivity(), GameContract {
             setSecondGameField()
 
             imageView3.animate()
-                .translationXBy(-180F)
-                .translationYBy(-100F)
+                .translationXBy(-widthAnim)
+                .translationYBy(-heightAnim)
                 .scaleYBy(-0.4F)
                 .scaleXBy(-0.4F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView3.animate()
-                        .translationXBy(-180F)
-                        .translationYBy(100F)
+                        .translationXBy(-widthAnim)
+                        .translationYBy(heightAnim)
                         .scaleYBy(0.4F)
                         .scaleXBy(0.4F)
                         .setDuration(timeInMillis / 2)
@@ -418,15 +441,15 @@ class GameActivity : AppCompatActivity(), GameContract {
                 }.start()
 
             imageView2.animate()
-                .translationXBy(180F)
-                .translationYBy(100F)
+                .translationXBy(widthAnim)
+                .translationYBy(heightAnim)
                 .scaleYBy(0.3F)
                 .scaleXBy(0.3F)
                 .setDuration(timeInMillis / 2)
                 .withEndAction {
                     imageView2.animate()
-                        .translationXBy(180F)
-                        .translationYBy(-100F)
+                        .translationXBy(widthAnim)
+                        .translationYBy(-heightAnim)
                         .scaleYBy(-0.3F)
                         .scaleXBy(-0.3F)
                         .setDuration(timeInMillis / 2)
@@ -563,4 +586,9 @@ class GameActivity : AppCompatActivity(), GameContract {
             .translationYBy(-200F)
             .start()
     }
+
+    override fun setText(text: String) {
+        time.setText(text)
+    }
+
 }

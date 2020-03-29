@@ -39,7 +39,7 @@
     </FrameLayout>
 
      <include
-         android:layout_width="354dp"
+         android:layout_width="match_parent"
          android:layout_height="match_parent"
          layout="@layout/main_game_field"
          android:layout_gravity="center|bottom"/>
