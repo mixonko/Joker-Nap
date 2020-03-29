@@ -168,8 +168,7 @@ class GamePresenter(val view: GameContract, val mix: MixGlasses = MixGlasses()) 
 
     fun onYouLoseClick() {
         view.hideYouLose()
-        lvl = 3
-        view.setText("10:00")
+        lvl = 3 
         update()
 
     }
@@ -178,6 +177,7 @@ class GamePresenter(val view: GameContract, val mix: MixGlasses = MixGlasses()) 
         view.hideMainThrimble()
         thrimbleRightChoice?.let { view.hideChoice(it) }
         thrimbleRightChoice = null
+        view.setText("10:00")
         view.setThrimbleEnable()
         view.init()
         view.addView()
